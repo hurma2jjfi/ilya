@@ -1,193 +1,3 @@
-<!-- <!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Оплата заказа</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
-
-        body {
-            background: #fafbfc;
-            margin: 0;
-            padding: 0;
-            font-family: "Playfair Display", serif;
-        }
-
-        h1, h2, p, input, label, button {
-            font-family: "Playfair Display", serif;
-        }
-
-        h1 {
-            text-align: center;
-            color: #222;
-            font-weight: 700;
-            margin-top: 40px;
-            letter-spacing: 1px;
-        }
-        form {
-            margin-top: 0;
-            background: #fff;
-            max-width: 400px;
-            margin: 20px auto;
-            border-radius: 12px;
-            padding: 32px;
-            box-shadow: 0 4px 24px 0 rgb(0 0 0 / 10%);
-        }
-        label {
-            display: block;
-            margin-bottom: 14px;
-            font-size: 17px;
-        }
-        select, input[type="date"], input[type="text"], input[type="time"] {
-            width: 100%;
-            padding: 11px 13px;
-            border: 1px solid #d6dbe2;
-            border-radius: 8px;
-            font-size: 16px;
-            margin-top: 5px;
-            background: #f6f7fa;
-            margin-bottom: 18px;
-            box-sizing: border-box;
-            outline: none;
-            transition: border-color 0.2s;
-        }
-        select:focus, input:focus {
-            border: 2px solid #FF0099;
-            background: #fff;
-        }
-        button {
-            width: 100%;
-            padding: 13px 0;
-            margin-top: 20px;
-            background: #FF0099;
-            color: #fff;
-            font-size: 20px;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background 0.2s;
-        }
-        button:hover {
-            background: #000000ff;
-        }
-        #result {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            max-width: 280px;
-            padding: 12px 14px;
-            background: #000000ff;
-            border-radius: 8px;
-            font-size: 14px;
-            box-shadow: 0 3px 10px rgb(0 0 0 / 0.2);
-            opacity: 0;
-            transform: translateX(100%) translateY(20px);
-            pointer-events: none;
-            transition: opacity 0.4s ease, transform 0.4s ease;
-            z-index: 1000;
-            color: #ffffffff;
-        }
-
-        #result.show {
-            opacity: 1;
-            transform: translateX(0) translateY(0);
-            pointer-events: auto;
-        }
-    </style>
-</head>
-<body>
-    <h1>Оплата заказа</h1>
-    <form id="myForm">
-        <label>Как вас зовут?</label>
-        <input type="text" name="fio" placeholder="Фамилия Имя Отчество" required>
-        <label>E-mail</label>
-        <input type="text" name="email" placeholder="Ваш E-mail" required>
-        <label>Мобильный телефон</label>
-        <input type="text" name="phone" placeholder="+7(__)__-__" required>
-        <label>Выберите тип оплаты:
-            <select id="eventType" name="eventType" required>
-                <option value="">Выберите...</option>
-                <option value="Наличные">Наличные</option>
-                <option value="Карта">Картой</option>
-                <option value="Курьер">Курьером</option>
-            </select>
-        </label>
-        <label>Дата:
-            <input type="date" id="eventDate" name="eventDate" required>
-        </label>
-        <label>Время:
-            <input type="time" id="eventTime" name="eventTime" required>
-        </label>
-        <label>Адрес доставки</label>
-        <input type="text" name="address" placeholder="Введите адрес доставки" required>
-        <button class="send__btn" type="submit">Оплатить</button>
-    </form>
-
-    <div id="result"></div>
-
-    
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery.maskedinput/1.4.1/jquery.maskedinput.min.js"></script>
-    <script>
-        $(document).ready(function() {
-        $('input[name="phone"]').mask("+7 (999) 999-99-99");
-});
-
-        document.getElementById('myForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-
-            const fio = document.querySelector('input[name="fio"]').value;
-            const email = document.querySelector('input[name="email"]').value;
-            const phone = document.querySelector('input[name="phone"]').value;
-            const eventType = document.getElementById('eventType').value;
-            const eventDate = document.getElementById('eventDate').value;
-            const eventTime = document.getElementById('eventTime').value;
-            const address = document.querySelector('input[name="address"]').value;
-            const createdAt = new Date().toISOString().slice(0, 19).replace('T', ' ');
-
-            if (!fio || !email || !phone || !eventType || !eventDate || !eventTime || !address) {
-                alert('Пожалуйста, заполните все поля');
-                return;
-            }
-
-            const data = new URLSearchParams();
-            data.append('fio', fio);
-            data.append('email', email);
-            data.append('phone', phone);
-            data.append('eventType', eventType);
-            data.append('eventDate', eventDate);
-            data.append('eventTime', eventTime);
-            data.append('address', address);
-            data.append('createdAt', createdAt);
-
-            fetch('save_event.php', {
-                method: 'POST',
-                body: data,
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded'
-                }
-            })
-            .then(response => response.json())
-            .then(result => {
-                const resEl = document.getElementById('result');
-                resEl.innerText = result.success || result.error;
-                resEl.classList.add('show');
-                setTimeout(() => {
-                    resEl.classList.remove('show');
-                    this.reset();
-                }, 3000);
-            })
-            .catch(error => {
-                document.getElementById('result').innerText = 'Ошибка: ' + error.message;
-            });
-        });
-    </script>
-
-
-</body>
-</html> -->
 <!DOCTYPE html>
 <html lang="ru">
 <head>
@@ -261,7 +71,7 @@
             transition: border-color 0.2s, box-shadow 0.2s;
         }
 
-        /* Glow effect on focus */
+    
         input:focus {
             background: #fff;
             box-shadow: 0 0 8px 2px #ff0099aa;
@@ -295,17 +105,16 @@
             justify-content: space-between;
         }
 
-        /* Steps container: hide all by default */
+     
         .form-step {
             display: none;
         }
 
-        /* Show only the active step */
         .form-step.active {
             display: block;
         }
 
-        /* Progress Bar container */
+     
         #progress-container {
             width: 100%;
             background: #000000ff;
@@ -352,14 +161,12 @@
     <h1>Оплата заказа</h1>
 
     <form id="myForm" novalidate>
-        <!-- Показываем шаги -->
         <div id="step-counter">Шаг 1 из 3</div>
 
         <div id="progress-container">
             <div id="progress-bar"></div>
         </div>
 
-        <!-- Step 1 -->
         <div class="form-step active" data-step="1">
             <label for="fio">Как вас зовут?</label>
             <input type="text" id="fio" name="fio" placeholder="Фамилия Имя Отчество" required />
@@ -371,7 +178,6 @@
             <input type="text" id="phone" name="phone" placeholder="+7 (___) ___-__-__" required />
         </div>
 
-        <!-- Step 2 -->
         <div class="form-step" data-step="2">
             <label for="eventType">Выберите тип оплаты:</label>
             <select id="eventType" name="eventType" required>
