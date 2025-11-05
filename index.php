@@ -192,7 +192,6 @@
             <input type="time" id="eventTime" name="eventTime" required />
         </div>
 
-        <!-- Step 3 -->
         <div class="form-step" data-step="3">
             <label for="address">Адрес доставки</label>
             <input type="text" id="address" name="address" placeholder="Введите адрес доставки" required />
@@ -234,7 +233,6 @@
         }
 
         function updateProgressBar(stepIndex) {
-            // Показываем прогресс в %
             const progressPercent = ((stepIndex) / (totalSteps - 1)) * 100;
             progressBar.style.width = `${progressPercent}%`;
         }
