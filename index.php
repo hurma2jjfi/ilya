@@ -36,7 +36,6 @@
             position: relative;
         }
 
-        /* Шаги сверху */
         #step-counter {
             text-align: center;
             font-size: 16px;
@@ -124,7 +123,6 @@
             overflow: hidden;
         }
 
-        /* Progress Bar fill */
         #progress-bar {
             height: 100%;
             width: 0%;
