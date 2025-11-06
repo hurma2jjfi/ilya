@@ -46,18 +46,18 @@ if ($eventDate < $currentDate) {
 }
 
 
-$sqlCheckSlot = "SELECT COUNT(*) as count FROM orders WHERE event_date = :event_date AND event_time = :event_time";
-$stmtCheckSlot = $pdo->prepare($sqlCheckSlot);
-$stmtCheckSlot->execute([
-    ':event_date' => $eventDate,
-    ':event_time' => $eventTime
-]);
-$result = $stmtCheckSlot->fetch(PDO::FETCH_ASSOC);
+// $sqlCheckSlot = "SELECT COUNT(*) as count FROM orders WHERE event_date = :event_date AND event_time = :event_time";
+// $stmtCheckSlot = $pdo->prepare($sqlCheckSlot);
+// $stmtCheckSlot->execute([
+//     ':event_date' => $eventDate,
+//     ':event_time' => $eventTime
+// ]);
+// $result = $stmtCheckSlot->fetch(PDO::FETCH_ASSOC);
 
-if ($result['count'] > 0) {
-    echo json_encode(["error" => "Выбранный вами слот доставки уже занят. Пожалуйста, выберите другой."]);
-    exit;
-}
+// if ($result['count'] > 0) {
+//     echo json_encode(["error" => "Выбранный вами слот доставки уже занят. Пожалуйста, выберите другой."]);
+//     exit;
+// }
 
 $sql = "INSERT INTO orders (fio, email, phone, event_type, event_date, event_time, address, created_at) VALUES (:fio, :email, :phone, :event_type, :event_date, :event_time, :address, :created_at)";
 $stmt = $pdo->prepare($sql);
