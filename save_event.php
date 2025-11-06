@@ -43,15 +43,15 @@ $sqlLast = "SELECT created_at FROM orders ORDER BY created_at DESC LIMIT 1";
 $stmtLast = $pdo->query($sqlLast);
 $lastOrder = $stmtLast->fetch(PDO::FETCH_ASSOC);
 
-if ($lastOrder) {
-    $lastCreatedAt = strtotime($lastOrder['created_at']);
-    $currentCreatedAt = strtotime($createdAt);
-    $diffSeconds = $currentCreatedAt - $lastCreatedAt;
-    if ($diffSeconds < 4 * 3600) {
-        echo json_encode(["error" => "Нельзя добавить заказ: с момента последнего заказа прошло меньше 4 часов."]);
-        exit;
-    }
-}
+// if ($lastOrder) {
+//     $lastCreatedAt = strtotime($lastOrder['created_at']);
+//     $currentCreatedAt = strtotime($createdAt);
+//     $diffSeconds = $currentCreatedAt - $lastCreatedAt;
+//     if ($diffSeconds < 4 * 3600) {
+//         echo json_encode(["error" => "Нельзя добавить заказ: с момента последнего заказа прошло меньше 4 часов."]);
+//         exit;
+//     }
+// }
 
 $sql = "INSERT INTO orders (fio, email, phone, event_type, event_date, event_time, address, created_at) VALUES (:fio, :email, :phone, :event_type, :event_date, :event_time, :address, :created_at)";
 $stmt = $pdo->prepare($sql);
