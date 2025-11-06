@@ -233,7 +233,6 @@ class FormWizard {
     }
 
     applyPhoneMask() {
-        // Using jQuery maskedinput plugin
         $(this.form).find('input[name="phone"]').mask("+7 (999) 999-99-99");
     }
 
